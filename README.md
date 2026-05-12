@@ -1,0 +1,1 @@
+diseño e implementación de un sistema de información académico inteligente para instituciones educativas públicas con limitaciones tecnológicas, particularmente en el municipio de Planeta Rica, Córdoba
