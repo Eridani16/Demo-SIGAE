@@ -4,6 +4,7 @@ import { RegisterController } from './register.controller.js';
 export class RegisterView {
   static renderRegister(containerId) {
     const container = document.getElementById(containerId);
+    container.className = 'app-auth';
     container.innerHTML = `
       <section class="login-shell">
         <div class="login-card register-card">

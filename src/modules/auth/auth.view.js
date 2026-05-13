@@ -4,6 +4,7 @@ import { AuthController } from './auth.controller.js';
 export class AuthView {
   static renderLogin(containerId) {
     const container = document.getElementById(containerId);
+    container.className = 'app-auth';
     container.innerHTML = `
       <section class="login-shell">
         <div class="login-card">

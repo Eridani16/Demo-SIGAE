@@ -18,6 +18,7 @@ export class AuthController {
     try {
       const user = await AuthService.login(email, password);
       window.localStorage.setItem('userId', user.uid);
+      window.localStorage.setItem('userEmail', user.email);
       window.localStorage.setItem('userRole', user.role);
       window.localStorage.setItem('studentId', user.uid);
       return { user };
@@ -29,6 +30,7 @@ export class AuthController {
   static async handleLogout() {
     await AuthService.logout();
     window.localStorage.removeItem('userId');
+    window.localStorage.removeItem('userEmail');
     window.localStorage.removeItem('userRole');
     window.localStorage.removeItem('studentId');
     window.location.hash = '/';
