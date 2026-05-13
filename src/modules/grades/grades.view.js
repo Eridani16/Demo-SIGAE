@@ -2,6 +2,7 @@ import { GradesController } from './grades.controller.js';
 import { AuthController } from '../auth/auth.controller.js';
 import { renderPanelLayout } from '../../utils/panelLayout.js';
 import { StudentsService } from '../students/students.service.js';
+import { CUSTOM_SUBJECT_VALUE, getSubjectsByGrade } from '../../utils/constants.js';
 
 export class GradesView {
   static async renderRegisterGrade(containerId, role = 'teacher') {
@@ -25,11 +26,13 @@ export class GradesView {
       const students = await StudentsService.getStudents();
       const studentOptions = students.length
         ? students.map(student => `
-            <option value="${student.id}">
+            <option value="${student.id}" data-grade="${student.grade || ''}">
               ${student.fullName || `${student.firstName || ''} ${student.lastName || ''}`.trim()} - ${student.documentId || 'Sin documento'} - Grado ${student.grade || 'N/A'}${student.group ? ` ${student.group}` : ''}
             </option>
           `).join('')
         : '<option value="">No hay estudiantes registrados</option>';
+      const initialSubjects = getSubjectsByGrade('');
+      const subjectOptions = initialSubjects.map(subject => `<option value="${subject}">${subject}</option>`).join('');
 
       const content = `
       <div class="panel-surface form-surface">
@@ -45,7 +48,16 @@ export class GradesView {
 
             <label class="form-field">
               <span>Asignatura</span>
-              <input type="text" name="subject" placeholder="Matematicas" required />
+              <select name="subject" id="subjectSelect" required>
+                <option value="">Selecciona una asignatura</option>
+                ${subjectOptions}
+                <option value="${CUSTOM_SUBJECT_VALUE}">Otra</option>
+              </select>
+            </label>
+
+            <label class="form-field is-hidden" id="customSubjectField">
+              <span>Otra asignatura</span>
+              <input type="text" name="customSubject" id="customSubjectInput" placeholder="Escribe la asignatura" />
             </label>
 
             <label class="form-field">
@@ -87,6 +99,38 @@ export class GradesView {
       });
 
       const form = document.getElementById('gradeForm');
+      const studentSelect = form?.elements.namedItem('studentId');
+      const subjectSelect = document.getElementById('subjectSelect');
+      const customSubjectField = document.getElementById('customSubjectField');
+      const customSubjectInput = document.getElementById('customSubjectInput');
+
+      const renderSubjects = (grade) => {
+        const availableSubjects = getSubjectsByGrade(grade);
+        const options = [
+          '<option value="">Selecciona una asignatura</option>',
+          ...availableSubjects.map(subject => `<option value="${subject}">${subject}</option>`),
+          `<option value="${CUSTOM_SUBJECT_VALUE}">Otra</option>`
+        ];
+        subjectSelect.innerHTML = options.join('');
+        customSubjectField.classList.add('is-hidden');
+        customSubjectInput.value = '';
+        customSubjectInput.required = false;
+      };
+
+      studentSelect?.addEventListener('change', () => {
+        const selectedOption = studentSelect.options[studentSelect.selectedIndex];
+        renderSubjects(selectedOption?.dataset.grade || '');
+      });
+
+      subjectSelect?.addEventListener('change', () => {
+        const isCustom = subjectSelect.value === CUSTOM_SUBJECT_VALUE;
+        customSubjectField.classList.toggle('is-hidden', !isCustom);
+        customSubjectInput.required = isCustom;
+        if (!isCustom) {
+          customSubjectInput.value = '';
+        }
+      });
+
       form?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const result = await GradesController.handleRegisterGrade(form);

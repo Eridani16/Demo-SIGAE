@@ -5,7 +5,9 @@ import { Validators } from '../../utils/validators.js';
 export class GradesController {
   static async handleRegisterGrade(form) {
     const studentId = form.studentId.value.trim();
-    const subject = form.subject.value.trim();
+    const selectedSubject = form.subject.value.trim();
+    const customSubject = form.customSubject ? form.customSubject.value.trim() : '';
+    const subject = selectedSubject === '__other__' ? customSubject : selectedSubject;
     const grade = form.grade.value;
     const period = form.period.value.trim();
     const teacherId = form.teacherId.value.trim();

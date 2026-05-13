@@ -572,6 +572,10 @@ button:hover {
   display: block;
 }
 
+.form-field.is-hidden {
+  display: none;
+}
+
 .form-field span {
   display: block;
   margin-bottom: 0.5rem;
