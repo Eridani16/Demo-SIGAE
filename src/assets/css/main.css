@@ -307,6 +307,16 @@ button:hover {
   font-weight: 600;
 }
 
+.panel-inline-alert {
+  margin-top: 1rem;
+  padding: 1rem 1.1rem;
+  border-radius: 16px;
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffe08a;
+  font-weight: 600;
+}
+
 .empty-state-message {
   margin-top: 0.85rem;
   color: #6d8499;
@@ -591,6 +601,18 @@ button:hover {
   border: 1px solid #d9e4f0;
   border-radius: 14px;
   background: #ffffff;
+}
+
+.form-field textarea {
+  width: 100%;
+  min-height: 110px;
+  padding: 0.85rem 1rem;
+  border: 1px solid #d9e4f0;
+  border-radius: 14px;
+  background: #ffffff;
+  box-sizing: border-box;
+  resize: vertical;
+  font-family: inherit;
 }
 
 .form-field-wide {

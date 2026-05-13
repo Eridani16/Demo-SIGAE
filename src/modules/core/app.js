@@ -1,4 +1,3 @@
-// src/modules/core/app.js
 import { Router } from '../../utils/router.js';
 import { AuthView } from '../auth/auth.view.js';
 import { RegisterView } from '../auth/register.view.js';
@@ -8,6 +7,7 @@ import { GradesView } from '../grades/grades.view.js';
 import { AttendanceView } from '../attendance/attendance.view.js';
 import { StudentsView } from '../students/students.view.js';
 import { TeachersView } from '../teachers/teachers.view.js';
+import { SurveyView } from '../survey/survey.view.js';
 import { auth } from './firebase.js';
 
 auth.onAuthStateChanged(user => {
@@ -30,6 +30,7 @@ const routes = {
   '/admin/teachers': () => TeachersView.renderRegisterTeacher('app'),
   '/admin/grades': () => GradesView.renderRegisterGrade('app', 'admin'),
   '/admin/attendance': () => AttendanceView.renderRegisterAttendance('app', 'admin'),
+  '/admin/survey': () => SurveyView.renderCentralizationSurvey('app'),
   '/404': () => { appDiv.innerHTML = '<h2>Pagina no encontrada</h2>'; }
 };
 

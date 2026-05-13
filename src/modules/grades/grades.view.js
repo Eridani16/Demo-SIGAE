@@ -20,7 +20,8 @@ export class GradesView {
       { path: navBase, label: 'Inicio' },
       ...(role === 'admin' ? [
         { path: `${navBase}/students`, label: 'Registrar estudiantes' },
-        { path: `${navBase}/teachers`, label: 'Registrar docentes' }
+        { path: `${navBase}/teachers`, label: 'Registrar docentes' },
+        { path: `${navBase}/survey`, label: 'Encuesta' }
       ] : []),
       { path: `${navBase}/grades`, label: 'Registrar notas' },
       { path: `${navBase}/attendance`, label: 'Registrar asistencia' }

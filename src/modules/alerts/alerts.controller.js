@@ -1,21 +1,24 @@
-// src/modules/alerts/alerts.controller.js
 import { AlertsService } from './alerts.service.js';
 
 export class AlertsController {
-  // Detecta bajo rendimiento y genera alerta si promedio < 3.0
   static async checkAndAlertLowPerformance(studentId, grades) {
-    if (!grades.length) return;
-    const sum = grades.reduce((acc, g) => acc + Number(g.grade), 0);
-    const avg = sum / grades.length;
-    if (avg < 3.0) {
+    if (!grades.length) return false;
+    const sum = grades.reduce((acc, grade) => acc + Number(grade.grade), 0);
+    const average = sum / grades.length;
+
+    if (average < 3.0) {
+      const alreadyExists = await AlertsService.hasPendingAlert(studentId, 'bajo_rendimiento');
+      if (alreadyExists) return false;
+
       await AlertsService.generateAlert({
         studentId,
         type: 'bajo_rendimiento',
-        message: `Promedio académico bajo (${avg.toFixed(2)}).`,
-        relatedData: { promedio: avg }
+        message: `Promedio academico bajo (${average.toFixed(2)}).`,
+        relatedData: { promedio: average }
       });
       return true;
     }
+
     return false;
   }
 }

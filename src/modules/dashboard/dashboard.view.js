@@ -14,7 +14,7 @@ export class DashboardView {
     }
 
     try {
-      const { grades, attendance, average, indicators } = await DashboardController.loadStudentDashboard(studentId);
+      const { grades, attendance, average, indicators, generatedAlert, durationMs } = await DashboardController.loadStudentDashboard(studentId);
       const attendanceRate = attendance.length
         ? Math.round((indicators.present / attendance.length) * 100)
         : 0;
@@ -40,7 +40,14 @@ export class DashboardView {
             <strong>${attendanceRate}%</strong>
             <p>Basada en los registros disponibles.</p>
           </article>
+          <article class="stat-card">
+            <span>Tiempo consulta notas</span>
+            <strong>${durationMs} ms</strong>
+            <p>Medicion automatica del acceso a la informacion academica.</p>
+          </article>
         </div>
+
+        ${generatedAlert ? '<div class="panel-inline-alert">Se genero una alerta de bajo rendimiento para este estudiante.</div>' : ''}
 
         <div class="panel-section-block">
           <div class="section-heading">
@@ -53,7 +60,7 @@ export class DashboardView {
                 <tr><th>Asignatura</th><th>Nota</th><th>Periodo</th></tr>
               </thead>
               <tbody>
-                ${grades.map(g => `<tr><td>${g.subject}</td><td>${g.grade}</td><td>${g.period}</td></tr>`).join('')}
+                ${grades.map(grade => `<tr><td>${grade.subject}</td><td>${grade.grade}</td><td>${grade.period}</td></tr>`).join('')}
               </tbody>
             </table>
           </div>
@@ -86,7 +93,7 @@ export class DashboardView {
                 <tr><th>Fecha</th><th>Estado</th></tr>
               </thead>
               <tbody>
-                ${attendance.map(a => `<tr><td>${a.date}</td><td>${a.status}</td></tr>`).join('')}
+                ${attendance.map(item => `<tr><td>${item.date}</td><td>${item.status}</td></tr>`).join('')}
               </tbody>
             </table>
           </div>

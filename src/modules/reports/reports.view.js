@@ -9,7 +9,11 @@ export class ReportsView {
     container.innerHTML = '<p>Cargando reportes...</p>';
 
     try {
-      const summaries = await ReportsController.getStudentReports();
+      const [summaries, evaluationMetrics] = await Promise.all([
+        ReportsController.getStudentReports(),
+        ReportsController.getEvaluationMetrics()
+      ]);
+
       const topAverage = summaries.length
         ? (summaries.reduce((total, summary) => total + Number(summary.promedio), 0) / summaries.length).toFixed(2)
         : '0.00';
@@ -19,7 +23,8 @@ export class ReportsView {
         { path: '/admin/students', label: 'Registrar estudiantes' },
         { path: '/admin/teachers', label: 'Registrar docentes' },
         { path: '/admin/grades', label: 'Registrar notas' },
-        { path: '/admin/attendance', label: 'Registrar asistencia' }
+        { path: '/admin/attendance', label: 'Registrar asistencia' },
+        { path: '/admin/survey', label: 'Encuesta' }
       ];
 
       const content = `
@@ -43,6 +48,31 @@ export class ReportsView {
 
         <div class="panel-section-block">
           <div class="section-heading">
+            <p class="section-kicker">Variables de evaluacion</p>
+            <h2>Indicadores del estudio</h2>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card">
+              <span>Tiempo consulta notas</span>
+              <strong>${evaluationMetrics.averageConsultationTime} ms</strong>
+              <p>${evaluationMetrics.accessLogCount} observaciones registradas automaticamente.</p>
+            </article>
+            <article class="stat-card">
+              <span>Alertas generadas</span>
+              <strong>${evaluationMetrics.alertsGenerated}</strong>
+              <p>Conteo directo desde el registro del sistema.</p>
+            </article>
+            <article class="stat-card">
+              <span>Centralizacion datos</span>
+              <strong>${evaluationMetrics.centralizationAverage}/5</strong>
+              <p>${evaluationMetrics.surveyResponses} encuestas almacenadas.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="panel-section-block">
+          <div class="section-heading">
             <p class="section-kicker">Reportes</p>
             <h2>Reporte academico por estudiante</h2>
           </div>
@@ -50,10 +80,10 @@ export class ReportsView {
           <div class="panel-surface">
             <table class="reports-table">
               <thead>
-                <tr><th>ID Estudiante</th><th>Promedio</th><th># Materias</th></tr>
+                <tr><th>Estudiante</th><th>Promedio</th><th># Materias</th></tr>
               </thead>
               <tbody>
-                ${summaries.map(s => `<tr><td>${s.studentId}</td><td>${s.promedio}</td><td>${s.materias}</td></tr>`).join('')}
+                ${summaries.map(summary => `<tr><td>${summary.studentName}</td><td>${summary.promedio}</td><td>${summary.materias}</td></tr>`).join('')}
               </tbody>
             </table>
           </div>
@@ -67,11 +97,11 @@ export class ReportsView {
 
           <div class="panel-surface">
             <ul class="metric-list">
-              ${summaries.map(s => `
+              ${summaries.map(summary => `
                 <li class="metric-row">
-                  <span>${s.studentId}</span>
-                  <strong>${s.promedio}</strong>
-                  <small>${s.materias} materias</small>
+                  <span>${summary.studentName}</span>
+                  <strong>${summary.promedio}</strong>
+                  <small>${summary.materias} materias</small>
                 </li>
               `).join('')}
             </ul>

@@ -16,7 +16,8 @@ export class TeachersView {
       { path: '/admin/students', label: 'Registrar estudiantes' },
       { path: '/admin/teachers', label: 'Registrar docentes' },
       { path: '/admin/grades', label: 'Registrar notas' },
-      { path: '/admin/attendance', label: 'Registrar asistencia' }
+      { path: '/admin/attendance', label: 'Registrar asistencia' },
+      { path: '/admin/survey', label: 'Encuesta' }
     ];
 
     const content = `

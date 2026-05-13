@@ -41,6 +41,24 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    match /alerts/{alertId} {
+      allow read: if isSignedIn();
+      allow create, update: if isAdmin() || isTeacher();
+      allow delete: if false;
+    }
+
+    match /access_logs/{logId} {
+      allow read: if isAdmin();
+      allow create: if isSignedIn();
+      allow update, delete: if false;
+    }
+
+    match /survey_responses/{responseId} {
+      allow read: if isAdmin();
+      allow create: if isSignedIn();
+      allow update, delete: if false;
+    }
+
     match /grades/{gradeId} {
       allow read: if isSignedIn();
       allow create, update: if isAdmin() || isTeacher();
