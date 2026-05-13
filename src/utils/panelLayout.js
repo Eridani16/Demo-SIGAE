@@ -9,10 +9,12 @@ export function formatRole(role) {
 }
 
 export function getUserContext() {
+  const userId = window.localStorage.getItem('userId') || '';
   const userEmail = window.localStorage.getItem('userEmail') || 'usuario@demo.com';
   const userRole = window.localStorage.getItem('userRole') || 'student';
 
   return {
+    userId,
     userEmail,
     userRole,
     userInitial: userEmail.charAt(0).toUpperCase()

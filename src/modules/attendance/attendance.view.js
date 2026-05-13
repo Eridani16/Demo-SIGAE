@@ -1,6 +1,6 @@
 import { AttendanceController } from './attendance.controller.js';
 import { AuthController } from '../auth/auth.controller.js';
-import { renderPanelLayout } from '../../utils/panelLayout.js';
+import { getUserContext, renderPanelLayout } from '../../utils/panelLayout.js';
 import { StudentsService } from '../students/students.service.js';
 
 export class AttendanceView {
@@ -13,10 +13,14 @@ export class AttendanceView {
     const brandTitle = role === 'admin' ? 'Panel administrativo' : 'Panel docente';
     const topbarKicker = role === 'admin' ? 'Administracion' : 'Docencia';
     const topbarTitle = role === 'admin' ? 'Registro de asistencia institucional' : 'Control de asistencia por docente';
+    const { userId } = getUserContext();
 
     const navItems = [
       { path: navBase, label: 'Inicio' },
-      ...(role === 'admin' ? [{ path: `${navBase}/students`, label: 'Registrar estudiantes' }] : []),
+      ...(role === 'admin' ? [
+        { path: `${navBase}/students`, label: 'Registrar estudiantes' },
+        { path: `${navBase}/teachers`, label: 'Registrar docentes' }
+      ] : []),
       { path: `${navBase}/grades`, label: 'Registrar notas' },
       { path: `${navBase}/attendance`, label: 'Registrar asistencia' }
     ];
@@ -60,7 +64,7 @@ export class AttendanceView {
 
             <label class="form-field form-field-wide">
               <span>ID del docente</span>
-              <input type="text" name="teacherId" placeholder="Ej: DOC-001" required />
+              <input type="text" name="teacherId" value="${userId}" readonly required />
             </label>
           </div>
 

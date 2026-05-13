@@ -35,6 +35,12 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    match /teachers/{teacherId} {
+      allow read: if isSignedIn();
+      allow create, update: if isAdmin();
+      allow delete: if false;
+    }
+
     match /grades/{gradeId} {
       allow read: if isSignedIn();
       allow create, update: if isAdmin() || isTeacher();
