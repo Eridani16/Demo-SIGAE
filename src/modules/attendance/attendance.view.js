@@ -1,11 +1,13 @@
 import { AttendanceController } from './attendance.controller.js';
 import { AuthController } from '../auth/auth.controller.js';
 import { renderPanelLayout } from '../../utils/panelLayout.js';
+import { StudentsService } from '../students/students.service.js';
 
 export class AttendanceView {
-  static renderRegisterAttendance(containerId, role = 'teacher') {
+  static async renderRegisterAttendance(containerId, role = 'teacher') {
     const container = document.getElementById(containerId);
     container.className = 'app-panel';
+    container.innerHTML = '<p>Cargando estudiantes...</p>';
 
     const navBase = role === 'admin' ? '/admin' : '/teacher';
     const brandTitle = role === 'admin' ? 'Panel administrativo' : 'Panel docente';
@@ -14,17 +16,31 @@ export class AttendanceView {
 
     const navItems = [
       { path: navBase, label: 'Inicio' },
+      ...(role === 'admin' ? [{ path: `${navBase}/students`, label: 'Registrar estudiantes' }] : []),
       { path: `${navBase}/grades`, label: 'Registrar notas' },
       { path: `${navBase}/attendance`, label: 'Registrar asistencia' }
     ];
 
-    const content = `
+    try {
+      const students = await StudentsService.getStudents();
+      const studentOptions = students.length
+        ? students.map(student => `
+            <option value="${student.id}">
+              ${student.fullName || `${student.firstName || ''} ${student.lastName || ''}`.trim()} - ${student.documentId || 'Sin documento'} - Grado ${student.grade || 'N/A'}${student.group ? ` ${student.group}` : ''}
+            </option>
+          `).join('')
+        : '<option value="">No hay estudiantes registrados</option>';
+
+      const content = `
       <div class="panel-surface form-surface">
         <form id="attendanceForm" class="data-entry-form">
           <div class="form-grid">
             <label class="form-field">
-              <span>ID del estudiante</span>
-              <input type="text" name="studentId" placeholder="Ej: EST-001" required />
+              <span>Estudiante</span>
+              <select name="studentId" ${students.length ? 'required' : 'disabled'}>
+                <option value="">Selecciona un estudiante</option>
+                ${studentOptions}
+              </select>
             </label>
 
             <label class="form-field">
@@ -48,39 +64,43 @@ export class AttendanceView {
             </label>
           </div>
 
-          <button type="submit" class="panel-primary-button">Guardar asistencia</button>
+          <button type="submit" class="panel-primary-button" ${students.length ? '' : 'disabled'}>Guardar asistencia</button>
           <div id="attendanceError" class="error-message"></div>
+          ${students.length ? '' : '<div class="empty-state-message">Primero registra al menos un estudiante desde el panel de administracion.</div>'}
         </form>
       </div>
-    `;
+      `;
 
-    container.innerHTML = renderPanelLayout({
-      brandTitle,
-      pageKicker: 'Ingreso de datos',
-      pageTitle: 'Registrar asistencia estudiantil',
-      navItems,
-      activePath: `${navBase}/attendance`,
-      topbarTitle,
-      topbarKicker,
-      content
-    });
+      container.innerHTML = renderPanelLayout({
+        brandTitle,
+        pageKicker: 'Ingreso de datos',
+        pageTitle: 'Registrar asistencia estudiantil',
+        navItems,
+        activePath: `${navBase}/attendance`,
+        topbarTitle,
+        topbarKicker,
+        content
+      });
 
-    document.getElementById('logoutButton')?.addEventListener('click', async () => {
-      await AuthController.handleLogout();
-    });
+      document.getElementById('logoutButton')?.addEventListener('click', async () => {
+        await AuthController.handleLogout();
+      });
 
-    const form = document.getElementById('attendanceForm');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const result = await AttendanceController.handleRegisterAttendance(form);
-      const errorDiv = document.getElementById('attendanceError');
-      if (result.error) {
-        errorDiv.textContent = result.error;
-      } else {
-        errorDiv.textContent = '';
-        form.reset();
-        alert('Asistencia registrada correctamente');
-      }
-    });
+      const form = document.getElementById('attendanceForm');
+      form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const result = await AttendanceController.handleRegisterAttendance(form);
+        const errorDiv = document.getElementById('attendanceError');
+        if (result.error) {
+          errorDiv.textContent = result.error;
+        } else {
+          errorDiv.textContent = '';
+          form.reset();
+          alert('Asistencia registrada correctamente');
+        }
+      });
+    } catch (error) {
+      container.innerHTML = '<p class="error-message">No fue posible cargar la lista de estudiantes.</p>';
+    }
   }
 }

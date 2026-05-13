@@ -16,6 +16,7 @@ export class ReportsView {
 
       const navItems = [
         { path: '/admin', label: 'Resumen' },
+        { path: '/admin/students', label: 'Registrar estudiantes' },
         { path: '/admin/grades', label: 'Registrar notas' },
         { path: '/admin/attendance', label: 'Registrar asistencia' }
       ];

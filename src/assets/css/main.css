@@ -301,6 +301,18 @@ button:hover {
   margin-top: 0.5rem;
 }
 
+.success-message {
+  color: var(--success-color);
+  margin-top: 0.75rem;
+  font-weight: 600;
+}
+
+.empty-state-message {
+  margin-top: 0.85rem;
+  color: #6d8499;
+  line-height: 1.5;
+}
+
 .alert {
   padding: 1rem;
   border-radius: var(--border-radius);

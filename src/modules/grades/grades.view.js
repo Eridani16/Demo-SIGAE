@@ -1,11 +1,13 @@
 import { GradesController } from './grades.controller.js';
 import { AuthController } from '../auth/auth.controller.js';
 import { renderPanelLayout } from '../../utils/panelLayout.js';
+import { StudentsService } from '../students/students.service.js';
 
 export class GradesView {
-  static renderRegisterGrade(containerId, role = 'teacher') {
+  static async renderRegisterGrade(containerId, role = 'teacher') {
     const container = document.getElementById(containerId);
     container.className = 'app-panel';
+    container.innerHTML = '<p>Cargando estudiantes...</p>';
 
     const navBase = role === 'admin' ? '/admin' : '/teacher';
     const brandTitle = role === 'admin' ? 'Panel administrativo' : 'Panel docente';
@@ -14,17 +16,31 @@ export class GradesView {
 
     const navItems = [
       { path: navBase, label: 'Inicio' },
+      ...(role === 'admin' ? [{ path: `${navBase}/students`, label: 'Registrar estudiantes' }] : []),
       { path: `${navBase}/grades`, label: 'Registrar notas' },
       { path: `${navBase}/attendance`, label: 'Registrar asistencia' }
     ];
 
-    const content = `
+    try {
+      const students = await StudentsService.getStudents();
+      const studentOptions = students.length
+        ? students.map(student => `
+            <option value="${student.id}">
+              ${student.fullName || `${student.firstName || ''} ${student.lastName || ''}`.trim()} - ${student.documentId || 'Sin documento'} - Grado ${student.grade || 'N/A'}${student.group ? ` ${student.group}` : ''}
+            </option>
+          `).join('')
+        : '<option value="">No hay estudiantes registrados</option>';
+
+      const content = `
       <div class="panel-surface form-surface">
         <form id="gradeForm" class="data-entry-form">
           <div class="form-grid">
             <label class="form-field">
-              <span>ID del estudiante</span>
-              <input type="text" name="studentId" placeholder="Ej: EST-001" required />
+              <span>Estudiante</span>
+              <select name="studentId" ${students.length ? 'required' : 'disabled'}>
+                <option value="">Selecciona un estudiante</option>
+                ${studentOptions}
+              </select>
             </label>
 
             <label class="form-field">
@@ -48,39 +64,43 @@ export class GradesView {
             </label>
           </div>
 
-          <button type="submit" class="panel-primary-button">Guardar nota</button>
+          <button type="submit" class="panel-primary-button" ${students.length ? '' : 'disabled'}>Guardar nota</button>
           <div id="gradeError" class="error-message"></div>
+          ${students.length ? '' : '<div class="empty-state-message">Primero registra al menos un estudiante desde el panel de administracion.</div>'}
         </form>
       </div>
-    `;
+      `;
 
-    container.innerHTML = renderPanelLayout({
-      brandTitle,
-      pageKicker: 'Ingreso de datos',
-      pageTitle: 'Registrar nota academica',
-      navItems,
-      activePath: `${navBase}/grades`,
-      topbarTitle,
-      topbarKicker,
-      content
-    });
+      container.innerHTML = renderPanelLayout({
+        brandTitle,
+        pageKicker: 'Ingreso de datos',
+        pageTitle: 'Registrar nota academica',
+        navItems,
+        activePath: `${navBase}/grades`,
+        topbarTitle,
+        topbarKicker,
+        content
+      });
 
-    document.getElementById('logoutButton')?.addEventListener('click', async () => {
-      await AuthController.handleLogout();
-    });
+      document.getElementById('logoutButton')?.addEventListener('click', async () => {
+        await AuthController.handleLogout();
+      });
 
-    const form = document.getElementById('gradeForm');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const result = await GradesController.handleRegisterGrade(form);
-      const errorDiv = document.getElementById('gradeError');
-      if (result.error) {
-        errorDiv.textContent = result.error;
-      } else {
-        errorDiv.textContent = '';
-        form.reset();
-        alert('Nota registrada correctamente');
-      }
-    });
+      const form = document.getElementById('gradeForm');
+      form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const result = await GradesController.handleRegisterGrade(form);
+        const errorDiv = document.getElementById('gradeError');
+        if (result.error) {
+          errorDiv.textContent = result.error;
+        } else {
+          errorDiv.textContent = '';
+          form.reset();
+          alert('Nota registrada correctamente');
+        }
+      });
+    } catch (error) {
+      container.innerHTML = '<p class="error-message">No fue posible cargar la lista de estudiantes.</p>';
+    }
   }
 }

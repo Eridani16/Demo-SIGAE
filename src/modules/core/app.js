@@ -6,6 +6,7 @@ import { DashboardView } from '../dashboard/dashboard.view.js';
 import { ReportsView } from '../reports/reports.view.js';
 import { GradesView } from '../grades/grades.view.js';
 import { AttendanceView } from '../attendance/attendance.view.js';
+import { StudentsView } from '../students/students.view.js';
 import { auth } from './firebase.js';
 
 auth.onAuthStateChanged(user => {
@@ -24,6 +25,7 @@ const routes = {
   '/teacher/grades': () => GradesView.renderRegisterGrade('app', 'teacher'),
   '/teacher/attendance': () => AttendanceView.renderRegisterAttendance('app', 'teacher'),
   '/admin': () => ReportsView.renderStudentReports('app'),
+  '/admin/students': () => StudentsView.renderRegisterStudent('app'),
   '/admin/grades': () => GradesView.renderRegisterGrade('app', 'admin'),
   '/admin/attendance': () => AttendanceView.renderRegisterAttendance('app', 'admin'),
   '/404': () => { appDiv.innerHTML = '<h2>Pagina no encontrada</h2>'; }
