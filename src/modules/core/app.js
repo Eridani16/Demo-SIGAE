@@ -1,10 +1,11 @@
 // src/modules/core/app.js
 import { Router } from '../../utils/router.js';
 import { AuthView } from '../auth/auth.view.js';
+import { RegisterView } from '../auth/register.view.js';
 import { DashboardView } from '../dashboard/dashboard.view.js';
 import { ReportsView } from '../reports/reports.view.js';
-import { RegisterView } from '../auth/register.view.js';
-// ...existing code...
+import { GradesView } from '../grades/grades.view.js';
+import { AttendanceView } from '../attendance/attendance.view.js';
 import { auth } from './firebase.js';
 
 auth.onAuthStateChanged(user => {
@@ -12,7 +13,6 @@ auth.onAuthStateChanged(user => {
     window.location.hash = '/';
   }
 });
-// ...existing code...
 
 const appDiv = document.getElementById('app');
 
@@ -20,15 +20,13 @@ const routes = {
   '/': () => AuthView.renderLogin('app'),
   '/register': () => RegisterView.renderRegister('app'),
   '/student': () => DashboardView.renderStudentDashboard('app', window.localStorage.getItem('studentId')),
+  '/teacher': () => GradesView.renderRegisterGrade('app', 'teacher'),
+  '/teacher/grades': () => GradesView.renderRegisterGrade('app', 'teacher'),
+  '/teacher/attendance': () => AttendanceView.renderRegisterAttendance('app', 'teacher'),
   '/admin': () => ReportsView.renderStudentReports('app'),
-  '/404': () => { appDiv.innerHTML = '<h2>Página no encontrada</h2>'; }
+  '/admin/grades': () => GradesView.renderRegisterGrade('app', 'admin'),
+  '/admin/attendance': () => AttendanceView.renderRegisterAttendance('app', 'admin'),
+  '/404': () => { appDiv.innerHTML = '<h2>Pagina no encontrada</h2>'; }
 };
 
 new Router(routes);
-
-// Guardar el id del estudiante tras login para demo (en producción usar JWT o contexto seguro)
-window.addEventListener('hashchange', () => {
-  if (window.location.hash.startsWith('#/student')) {
-    // Aquí podrías cargar datos del usuario autenticado
-  }
-});

@@ -489,6 +489,10 @@ button:hover {
   margin-bottom: 1.2rem;
 }
 
+.panel-section-block {
+  margin-top: 1.2rem;
+}
+
 .section-heading {
   margin-bottom: 0.9rem;
 }
@@ -535,6 +539,60 @@ button:hover {
 
 .panel-surface {
   padding: 1rem 1.15rem;
+}
+
+.form-surface {
+  max-width: 860px;
+}
+
+.data-entry-form {
+  margin-bottom: 0;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-field {
+  display: block;
+}
+
+.form-field span {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #6d8499;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.form-field input,
+.form-field select {
+  height: 52px;
+  margin: 0;
+  border: 1px solid #d9e4f0;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.form-field-wide {
+  grid-column: 1 / -1;
+}
+
+.panel-primary-button {
+  width: auto;
+  min-width: 200px;
+  padding: 0.95rem 1.4rem;
+  margin: 0;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #18c8e8 0%, #278ff6 100%);
+  box-shadow: 0 14px 30px rgba(24, 140, 230, 0.22);
+}
+
+.panel-primary-button:hover {
+  background: linear-gradient(90deg, #14bbda 0%, #227fe0 100%);
 }
 
 .dashboard-table,
@@ -651,6 +709,7 @@ button:hover {
   .panel-topbar,
   .panel-topbar-user,
   .stats-grid,
+  .form-grid,
   .metric-row {
     grid-template-columns: 1fr;
   }
