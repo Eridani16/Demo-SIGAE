@@ -1,7 +1,8 @@
 import { GradesController } from './grades.controller.js';
 import { AuthController } from '../auth/auth.controller.js';
-import { getUserContext, renderPanelLayout } from '../../utils/panelLayout.js';
+import { renderPanelLayout } from '../../utils/panelLayout.js';
 import { StudentsService } from '../students/students.service.js';
+import { TeachersService } from '../teachers/teachers.service.js';
 import { CUSTOM_SUBJECT_VALUE, getSubjectsByGrade } from '../../utils/constants.js';
 
 export class GradesView {
@@ -14,7 +15,6 @@ export class GradesView {
     const brandTitle = role === 'admin' ? 'Panel administrativo' : 'Panel docente';
     const topbarKicker = role === 'admin' ? 'Administracion' : 'Docencia';
     const topbarTitle = role === 'admin' ? 'Registro de notas institucional' : 'Carga de notas por docente';
-    const { userId } = getUserContext();
 
     const navItems = [
       { path: navBase, label: 'Inicio' },
@@ -28,6 +28,7 @@ export class GradesView {
 
     try {
       const students = await StudentsService.getStudents();
+      const teachers = await TeachersService.getTeachers();
       const studentOptions = students.length
         ? students.map(student => `
             <option value="${student.id}" data-grade="${student.grade || ''}">
@@ -35,8 +36,16 @@ export class GradesView {
             </option>
           `).join('')
         : '<option value="">No hay estudiantes registrados</option>';
+      const teacherOptions = teachers.length
+        ? teachers.map(teacher => `
+            <option value="${teacher.id}">
+              ${teacher.fullName || `${teacher.firstName || ''} ${teacher.lastName || ''}`.trim()} - ${teacher.specialty || 'Sin especialidad'}
+            </option>
+          `).join('')
+        : '<option value="">No hay docentes registrados</option>';
       const initialSubjects = getSubjectsByGrade('');
       const subjectOptions = initialSubjects.map(subject => `<option value="${subject}">${subject}</option>`).join('');
+      const formDisabled = !students.length || !teachers.length;
 
       const content = `
       <div class="panel-surface form-surface">
@@ -75,14 +84,18 @@ export class GradesView {
             </label>
 
             <label class="form-field form-field-wide">
-              <span>ID del docente</span>
-              <input type="text" name="teacherId" value="${userId}" readonly required />
+              <span>Docente</span>
+              <select name="teacherId" ${teachers.length ? 'required' : 'disabled'}>
+                <option value="">Selecciona un docente</option>
+                ${teacherOptions}
+              </select>
             </label>
           </div>
 
-          <button type="submit" class="panel-primary-button" ${students.length ? '' : 'disabled'}>Guardar nota</button>
+          <button type="submit" class="panel-primary-button" ${formDisabled ? 'disabled' : ''}>Guardar nota</button>
           <div id="gradeError" class="error-message"></div>
           ${students.length ? '' : '<div class="empty-state-message">Primero registra al menos un estudiante desde el panel de administracion.</div>'}
+          ${teachers.length ? '' : '<div class="empty-state-message">Primero registra al menos un docente desde el panel de administracion.</div>'}
         </form>
       </div>
       `;
@@ -148,7 +161,7 @@ export class GradesView {
         }
       });
     } catch (error) {
-      container.innerHTML = '<p class="error-message">No fue posible cargar la lista de estudiantes.</p>';
+      container.innerHTML = '<p class="error-message">No fue posible cargar la lista de estudiantes y docentes.</p>';
     }
   }
 }
