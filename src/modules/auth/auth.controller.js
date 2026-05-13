@@ -6,22 +6,31 @@ export class AuthController {
   static async handleLogin(form) {
     const email = form.email.value.trim();
     const password = form.password.value;
-    // Validación estricta
+
     if (!Validators.required(email) || !Validators.email(email)) {
-      return { error: 'Correo electrónico inválido' };
+      return { error: 'Correo electronico invalido' };
     }
+
     if (!Validators.required(password) || !Validators.minLength(password, 6)) {
-      return { error: 'Contraseña inválida (mínimo 6 caracteres)' };
+      return { error: 'Contrasena invalida (minimo 6 caracteres)' };
     }
+
     try {
       const user = await AuthService.login(email, password);
+      window.localStorage.setItem('userId', user.uid);
+      window.localStorage.setItem('userRole', user.role);
+      window.localStorage.setItem('studentId', user.uid);
       return { user };
     } catch (error) {
-      return { error: error.message || 'Error de autenticación' };
+      return { error: error.message || 'Error de autenticacion' };
     }
   }
 
   static async handleLogout() {
     await AuthService.logout();
+    window.localStorage.removeItem('userId');
+    window.localStorage.removeItem('userRole');
+    window.localStorage.removeItem('studentId');
+    window.location.hash = '/';
   }
 }

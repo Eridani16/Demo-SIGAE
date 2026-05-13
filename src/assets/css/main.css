@@ -1,4 +1,4 @@
-/* main.css - Estilos base del sistema académico */
+/* main.css - Estilos base del sistema academico */
 
 :root {
   --primary-color: #1a73e8;
@@ -17,25 +17,23 @@ body {
   font-family: var(--font-family);
   background: var(--background-color);
   color: var(--text-color);
-}
-
-/* ...estilos base previos... */
-body {
-  /* ... */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
+
 #app {
   flex: 1;
   max-width: 900px;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
+
 form, table {
   width: 100%;
   margin-bottom: 2rem;
 }
+
 input, select, button {
   padding: 0.5rem;
   margin: 0.3rem 0;
@@ -44,6 +42,7 @@ input, select, button {
   width: 100%;
   box-sizing: border-box;
 }
+
 button {
   background: var(--primary-color);
   color: #fff;
@@ -51,33 +50,66 @@ button {
   cursor: pointer;
   font-weight: bold;
 }
+
 button:hover {
   background: var(--secondary-color);
 }
-@media (max-width: 600px) {
-  #app {
-    padding: 1rem 0.2rem;
-  }
-  table, thead, tbody, th, td, tr {
-    display: block;
-    width: 100%;
-  }
-  th, td {
-    padding: 0.5rem 0;
-  }
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
+
+.page-header h2 {
+  margin: 0;
+}
+
+.secondary-button {
+  width: auto;
+  padding: 0.75rem 1rem;
+  background: var(--danger-color);
+}
+
+.secondary-button:hover {
+  background: #c53929;
+}
+
 .error-message {
   color: var(--danger-color);
   margin-top: 0.5rem;
 }
+
 .alert {
   padding: 1rem;
   border-radius: var(--border-radius);
   margin-bottom: 1rem;
 }
+
 .alert-warning {
   background: #fff3cd;
   color: #856404;
   border: 1px solid #ffeeba;
 }
-/* Más estilos se agregarán por módulo */
+
+@media (max-width: 600px) {
+  #app {
+    padding: 1rem 0.2rem;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  table, thead, tbody, th, td, tr {
+    display: block;
+    width: 100%;
+  }
+
+  th, td {
+    padding: 0.5rem 0;
+  }
+}

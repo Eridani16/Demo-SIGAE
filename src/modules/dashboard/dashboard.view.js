@@ -1,15 +1,24 @@
-// src/modules/dashboard/dashboard.view.js
+import { AuthController } from '../auth/auth.controller.js';
 import { DashboardController } from './dashboard.controller.js';
 
 export class DashboardView {
   static async renderStudentDashboard(containerId, studentId) {
     const container = document.getElementById(containerId);
     container.innerHTML = '<p>Cargando datos...</p>';
+
+    if (!studentId) {
+      container.innerHTML = '<p class="error-message">No se encontro una sesion valida.</p>';
+      return;
+    }
+
     try {
       const { grades, attendance, average, indicators } = await DashboardController.loadStudentDashboard(studentId);
 
-      // Tabla de notas
-      let gradesTable = `
+      const gradesTable = `
+        <div class="page-header">
+          <h2>Panel del estudiante</h2>
+          <button id="logoutButton" class="secondary-button" type="button">Cerrar sesion</button>
+        </div>
         <h2>Notas</h2>
         <table class="dashboard-table">
           <thead>
@@ -22,8 +31,7 @@ export class DashboardView {
         <p><strong>Promedio:</strong> ${average}</p>
       `;
 
-      // Tabla de asistencia
-      let attendanceTable = `
+      const attendanceTable = `
         <h2>Asistencia</h2>
         <table class="dashboard-table">
           <thead>
@@ -41,6 +49,9 @@ export class DashboardView {
       `;
 
       container.innerHTML = gradesTable + attendanceTable;
+      document.getElementById('logoutButton')?.addEventListener('click', async () => {
+        await AuthController.handleLogout();
+      });
     } catch (error) {
       container.innerHTML = '<p class="error-message">Error al cargar datos del estudiante.</p>';
     }
