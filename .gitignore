@@ -1,2 +1,2 @@
-# Ignorar configuración privada de Firebase
-# src/modules/core/firebaseConfig.js
+# Archivos generados por Firebase local
+.firebase/

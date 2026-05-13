@@ -1,5 +1,5 @@
-// src/modules/core/firebaseConfig.example.js
-// Renombra este archivo a firebaseConfig.js y coloca aquí tus credenciales reales
+// Configuración web de Firebase usada por la app publicada.
+// En Firebase, estas claves de cliente no sustituyen reglas de seguridad.
 export const firebaseConfig = {
   apiKey: "AIzaSyDbGlLkRil37szJbbrM4h64soVc7siWX8o",
   authDomain: "loginsigae-4f3b7.firebaseapp.com",
@@ -8,4 +8,3 @@ export const firebaseConfig = {
   messagingSenderId: "771521049044",
   appId: "1:771521049044:web:157c8e5e8f1381a7022641"
 };
-
