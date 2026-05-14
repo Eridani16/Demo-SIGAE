@@ -7,6 +7,7 @@ import { GradesView } from '../grades/grades.view.js';
 import { AttendanceView } from '../attendance/attendance.view.js';
 import { StudentsView } from '../students/students.view.js';
 import { TeachersView } from '../teachers/teachers.view.js';
+import { TeacherDashboardView } from '../teachers/teacher-dashboard.view.js';
 import { SurveyView } from '../survey/survey.view.js';
 import { auth } from './firebase.js';
 
@@ -22,7 +23,7 @@ const routes = {
   '/': () => AuthView.renderLogin('app'),
   '/register': () => RegisterView.renderRegister('app'),
   '/student': () => DashboardView.renderStudentDashboard('app', window.localStorage.getItem('studentId')),
-  '/teacher': () => GradesView.renderRegisterGrade('app', 'teacher'),
+  '/teacher': () => TeacherDashboardView.renderTeacherDashboard('app'),
   '/teacher/grades': () => GradesView.renderRegisterGrade('app', 'teacher'),
   '/teacher/attendance': () => AttendanceView.renderRegisterAttendance('app', 'teacher'),
   '/admin': () => ReportsView.renderStudentReports('app'),

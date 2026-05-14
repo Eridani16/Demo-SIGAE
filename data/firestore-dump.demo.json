@@ -1,0 +1,285 @@
+{
+  "meta": {
+    "project": "SIGAE",
+    "description": "Volcado demo de Firestore para pruebas funcionales de SIGAE.",
+    "generatedAt": "2026-05-13T16:30:00-05:00",
+    "notes": [
+      "Los IDs son estables para facilitar referencias cruzadas entre colecciones.",
+      "Los campos createdAt se dejan en formato ISO 8601 para importacion o carga manual."
+    ]
+  },
+"__collections__": {
+    "students": [
+      {
+        "id": "student_001",
+        "firstName": "Laura",
+        "lastName": "Martinez",
+        "fullName": "Laura Martinez",
+        "documentId": "1087123401",
+        "grade": "9",
+        "group": "A",
+        "guardianName": "Martha Martinez",
+        "guardianPhone": "3004567812",
+        "email": "laura.martinez@colegio.edu.co",
+        "createdAt": "2026-04-01T08:00:00-05:00"
+      },
+      {
+        "id": "student_002",
+        "firstName": "Samuel",
+        "lastName": "Lopez",
+        "fullName": "Samuel Lopez",
+        "documentId": "1087123402",
+        "grade": "10",
+        "group": "B",
+        "guardianName": "Carlos Lopez",
+        "guardianPhone": "3015552288",
+        "email": "samuel.lopez@colegio.edu.co",
+        "createdAt": "2026-04-01T08:05:00-05:00"
+      },
+      {
+        "id": "student_003",
+        "firstName": "Valentina",
+        "lastName": "Ruiz",
+        "fullName": "Valentina Ruiz",
+        "documentId": "1087123403",
+        "grade": "11",
+        "group": "A",
+        "guardianName": "Diana Ruiz",
+        "guardianPhone": "3024441133",
+        "email": "valentina.ruiz@colegio.edu.co",
+        "createdAt": "2026-04-01T08:10:00-05:00"
+      },
+      {
+        "id": "student_004",
+        "firstName": "Jhon",
+        "lastName": "Perez",
+        "fullName": "Jhon Perez",
+        "documentId": "1087123404",
+        "grade": "7",
+        "group": "C",
+        "guardianName": "Sandra Perez",
+        "guardianPhone": "3206789012",
+        "email": "jhon.perez@colegio.edu.co",
+        "createdAt": "2026-04-01T08:15:00-05:00"
+      }
+    ],
+    "teachers": [
+      {
+        "id": "teacher_001",
+        "firstName": "Ana",
+        "lastName": "Torres",
+        "fullName": "Ana Torres",
+        "documentId": "52345001",
+        "specialty": "Matematicas",
+        "phone": "3002221100",
+        "email": "ana.torres@colegio.edu.co",
+        "createdAt": "2026-04-01T09:00:00-05:00"
+      },
+      {
+        "id": "teacher_002",
+        "firstName": "Miguel",
+        "lastName": "Castro",
+        "fullName": "Miguel Castro",
+        "documentId": "52345002",
+        "specialty": "Ingles",
+        "phone": "3002221101",
+        "email": "miguel.castro@colegio.edu.co",
+        "createdAt": "2026-04-01T09:05:00-05:00"
+      },
+      {
+        "id": "teacher_003",
+        "firstName": "Paola",
+        "lastName": "Mejia",
+        "fullName": "Paola Mejia",
+        "documentId": "52345003",
+        "specialty": "Biologia",
+        "phone": "3002221102",
+        "email": "paola.mejia@colegio.edu.co",
+        "createdAt": "2026-04-01T09:10:00-05:00"
+      }
+    ],
+    "grades": [
+      {
+        "id": "grade_001",
+        "studentId": "student_001",
+        "subject": "Matematicas",
+        "grade": 4.6,
+        "period": "2026-1",
+        "teacherId": "teacher_001",
+        "createdAt": "2026-04-15T10:00:00-05:00"
+      },
+      {
+        "id": "grade_002",
+        "studentId": "student_001",
+        "subject": "Ingles",
+        "grade": 4.2,
+        "period": "2026-1",
+        "teacherId": "teacher_002",
+        "createdAt": "2026-04-15T10:05:00-05:00"
+      },
+      {
+        "id": "grade_003",
+        "studentId": "student_002",
+        "subject": "Matematicas",
+        "grade": 3.8,
+        "period": "2026-1",
+        "teacherId": "teacher_001",
+        "createdAt": "2026-04-16T09:30:00-05:00"
+      },
+      {
+        "id": "grade_004",
+        "studentId": "student_002",
+        "subject": "Biologia",
+        "grade": 4.4,
+        "period": "2026-1",
+        "teacherId": "teacher_003",
+        "createdAt": "2026-04-16T09:35:00-05:00"
+      },
+      {
+        "id": "grade_005",
+        "studentId": "student_003",
+        "subject": "Ingles",
+        "grade": 4.9,
+        "period": "2026-1",
+        "teacherId": "teacher_002",
+        "createdAt": "2026-04-17T11:20:00-05:00"
+      },
+      {
+        "id": "grade_006",
+        "studentId": "student_004",
+        "subject": "Biologia",
+        "grade": 2.8,
+        "period": "2026-1",
+        "teacherId": "teacher_003",
+        "createdAt": "2026-04-18T08:45:00-05:00"
+      }
+    ],
+    "attendance": [
+      {
+        "id": "attendance_001",
+        "studentId": "student_001",
+        "date": "2026-04-21",
+        "status": "presente",
+        "teacherId": "teacher_001",
+        "createdAt": "2026-04-21T07:10:00-05:00"
+      },
+      {
+        "id": "attendance_002",
+        "studentId": "student_002",
+        "date": "2026-04-21",
+        "status": "tarde",
+        "teacherId": "teacher_001",
+        "createdAt": "2026-04-21T07:12:00-05:00"
+      },
+      {
+        "id": "attendance_003",
+        "studentId": "student_003",
+        "date": "2026-04-21",
+        "status": "presente",
+        "teacherId": "teacher_002",
+        "createdAt": "2026-04-21T07:15:00-05:00"
+      },
+      {
+        "id": "attendance_004",
+        "studentId": "student_004",
+        "date": "2026-04-21",
+        "status": "ausente",
+        "teacherId": "teacher_003",
+        "createdAt": "2026-04-21T07:20:00-05:00"
+      },
+      {
+        "id": "attendance_005",
+        "studentId": "student_004",
+        "date": "2026-04-22",
+        "status": "ausente",
+        "teacherId": "teacher_003",
+        "createdAt": "2026-04-22T07:22:00-05:00"
+      }
+    ],
+    "alerts": [
+      {
+        "id": "alert_001",
+        "studentId": "student_004",
+        "type": "inasistencia",
+        "message": "El estudiante acumula dos ausencias consecutivas.",
+        "relatedData": {
+          "dates": [
+            "2026-04-21",
+            "2026-04-22"
+          ],
+          "trigger": "attendance"
+        },
+        "status": "pendiente",
+        "createdAt": "2026-04-22T08:00:00-05:00"
+      },
+      {
+        "id": "alert_002",
+        "studentId": "student_004",
+        "type": "bajo_rendimiento",
+        "message": "El promedio parcial del estudiante esta por debajo de 3.0.",
+        "relatedData": {
+          "period": "2026-1",
+          "latestGrade": 2.8,
+          "subject": "Biologia"
+        },
+        "status": "pendiente",
+        "createdAt": "2026-04-22T08:10:00-05:00"
+      }
+    ],
+    "survey_responses": [
+      {
+        "id": "survey_001",
+        "respondentName": "Claudia Herrera",
+        "respondentRole": "admin",
+        "centralizationScore": 5,
+        "easeFindingInfo": 4,
+        "comments": "La informacion se consulta mas rapido que con registros dispersos.",
+        "createdAt": "2026-04-25T14:00:00-05:00"
+      },
+      {
+        "id": "survey_002",
+        "respondentName": "Miguel Castro",
+        "respondentRole": "teacher",
+        "centralizationScore": 4,
+        "easeFindingInfo": 5,
+        "comments": "La vista del panel facilita registrar notas y asistencia.",
+        "createdAt": "2026-04-25T14:10:00-05:00"
+      },
+      {
+        "id": "survey_003",
+        "respondentName": "Laura Martinez",
+        "respondentRole": "student",
+        "centralizationScore": 4,
+        "easeFindingInfo": 4,
+        "comments": "Seria util incluir mas detalle en el historial academico.",
+        "createdAt": "2026-04-25T14:20:00-05:00"
+      }
+    ],
+    "access_logs": [
+      {
+        "id": "log_001",
+        "studentId": "student_001",
+        "userId": "teacher_001",
+        "queryType": "dashboard_grades",
+        "durationMs": 320,
+        "createdAt": "2026-04-26T09:00:00-05:00"
+      },
+      {
+        "id": "log_002",
+        "studentId": "student_004",
+        "userId": "teacher_003",
+        "queryType": "dashboard_attendance",
+        "durationMs": 410,
+        "createdAt": "2026-04-26T09:05:00-05:00"
+      },
+      {
+        "id": "log_003",
+        "studentId": "student_002",
+        "userId": "teacher_001",
+        "queryType": "student_lookup",
+        "durationMs": 205,
+        "createdAt": "2026-04-26T09:15:00-05:00"
+      }
+    ]
+  }
+}

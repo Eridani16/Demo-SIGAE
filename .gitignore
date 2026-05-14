@@ -1,2 +1,4 @@
 # Archivos generados por Firebase local
 .firebase/
+# Clave privada de Firebase Admin SDK (NO subir nunca)
+serviceAccountKey.json

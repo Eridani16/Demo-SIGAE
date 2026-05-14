@@ -1,5 +1,6 @@
 // src/modules/auth/auth.controller.js
 import { AuthService } from './auth.service.js';
+import { StudentsService } from '../students/students.service.js';
 import { Validators } from '../../utils/validators.js';
 
 export class AuthController {
@@ -20,7 +21,18 @@ export class AuthController {
       window.localStorage.setItem('userId', user.uid);
       window.localStorage.setItem('userEmail', user.email);
       window.localStorage.setItem('userRole', user.role);
-      window.localStorage.setItem('studentId', user.uid);
+
+      if (user.role === 'student') {
+        const student = await StudentsService.getStudentByEmail(email);
+        if (student) {
+          window.localStorage.setItem('studentId', student.id);
+        } else {
+          window.localStorage.setItem('studentId', user.uid);
+        }
+      } else {
+        window.localStorage.setItem('studentId', user.uid);
+      }
+
       return { user };
     } catch (error) {
       return { error: error.message || 'Error de autenticacion' };
